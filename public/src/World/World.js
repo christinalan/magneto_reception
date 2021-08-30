@@ -39,36 +39,44 @@ class World {
     const floors = createFloor();
 
     //animations
-    const birds = createBirds();
-    const birdLine = createLineBird();
-    const flock = createFlock();
-
-    const cylinders = createCylinder();
+    // const birds = createBirds();
+    // const birdLine = createLineBird();
+    // const flock = createFlock();
+    // const cylinders = createCylinder();
 
     loop.updatables.push(
       camera,
       scene,
       floors,
-      birds,
-      birdLine,
-      flock,
-      cylinders,
+
       controls
     );
+    // loop.updatables.push(
+    //   camera,
+    //   scene,
+    //   floors,
+    //   birds,
+    //   birdLine,
+    //   flock,
+    //   cylinders,
+    //   controls
+    // );
 
-    scene.add(ambientL, birds, birdLine);
+    scene.add(ambientL);
+    // scene.add(ambientL, birds, birdLine);
 
     for (let i = 0; i < floors.length; i++) {
       scene.add(floors[i]);
     }
 
-    for (let i = 0; i < cylinders.length; i++) {
-      scene.add(cylinders[i]);
-    }
+    // for (let i = 0; i < cylinders.length; i++) {
+    //   scene.add(cylinders[i]);
+    // }
 
-    for (let i = 0; i < flock.length; i++) {
-      scene.add(flock[i]);
-    }
+    // for (let i = 0; i < flock.length; i++) {
+    //   scene.add(flock[i]);
+    // }
+
     // for (let i = 0; i < wires.length; i++) {
     //   scene.add(wires[i]);
 
