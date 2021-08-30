@@ -11,17 +11,17 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// let http = require("http");
-// let server = http.createServer(app);
+let http = require("http");
+let server = http.createServer(app);
 
-let https = require("https");
-let fs = require("fs");
-let options = {
-  key: fs.readFileSync("./localhost-key.pem"),
-  cert: fs.readFileSync("./localhost.pem"),
-};
+// let https = require("https");
+// let fs = require("fs");
+// let options = {
+//   key: fs.readFileSync("./localhost-key.pem"),
+//   cert: fs.readFileSync("./localhost.pem"),
+// };
 
-let server = https.createServer(options, app);
+// let server = https.createServer(options, app);
 
 let port = process.env.PORT || 3000;
 
