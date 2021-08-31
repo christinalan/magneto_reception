@@ -84,16 +84,16 @@ function createFloor() {
     for (let floor of floors) {
       var speed = 0.3;
       floor.position.z += Math.sin(elapsedTime) * 2;
-      if (audio) {
-        floor.children[0].rotation.y += Math.sin(Math.PI / 4) * speed;
+      // if (audio) {
+      //   floor.children[0].rotation.y += Math.sin(Math.PI / 4) * speed;
 
-        if (
-          floor.children[0].rotation.y >= Math.PI / 4 &&
-          floor.children[0].rotation.y <= 0
-        ) {
-          speed *= -1;
-        }
-      }
+      //   if (
+      //     floor.children[0].rotation.y >= Math.PI / 4 &&
+      //     floor.children[0].rotation.y <= 0
+      //   ) {
+      //     speed *= -1;
+      //   }
+      // }
     }
   };
   return floors;

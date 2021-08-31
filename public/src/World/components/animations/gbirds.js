@@ -6,10 +6,14 @@ import { analyser } from "../animations/cylinder.js";
 import { createRenderer } from "../../systems/renderer.js";
 
 let fam = [];
-let audio, bird, data;
+let geometry, material;
+let audio, bird, data, texture;
 let angle = 0;
 let angleV = 0;
 let angleA = 0;
+let newBirds = [];
+
+let speed, clock, mouse;
 
 function mapRange(value, minf, maxf, mins, maxs) {
   value = (value - minf) / (maxf - minf);
@@ -18,8 +22,10 @@ function mapRange(value, minf, maxf, mins, maxs) {
 
 function generateBirds() {
   const renderer = createRenderer();
+  clock = new THREE.Clock();
+  mouse = new THREE.Vector2();
   const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load("images/textures/3GWCDMA.png");
+  texture = textureLoader.load("images/textures/3GWCDMA.png");
 
   data = analyser.getFrequencyData();
 
@@ -29,8 +35,8 @@ function generateBirds() {
 
   const dataTexture = new THREE.DataTexture(data, 128, 1, format);
 
-  const geometry = new THREE.ConeGeometry(5, 10, 2);
-  const material = new THREE.MeshLambertMaterial({
+  geometry = new THREE.ConeGeometry(5, 10, 2);
+  material = new THREE.MeshLambertMaterial({
     color: 0xbf71ff,
     map: texture,
     emissive: 0xffffff,
@@ -74,6 +80,53 @@ function generateBirds() {
     var elapsedTime = clock.getElapsedTime();
     const dataAvg = analyser.getAverageFrequency();
 
+    //trying raycaster
+    const delta = clock.getDelta();
+
+    const displacement = new THREE.Vector3(0, speed, 0);
+    const target = new THREE.Vector3();
+    const velocity1 = new THREE.Vector3();
+
+    speed += angleA;
+
+    const raycaster = new THREE.Raycaster();
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    for (let i = 0; i < intersects.length; i++) {
+      const intersect = intersects[0];
+
+      const geo = new THREE.ConeGeometry(1, 10, 2);
+      geo.translate(-200, 30, -210);
+      const material = new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        opacity: 0.6,
+        transparent: true,
+        map: texture,
+      });
+
+      const newBird = new THREE.Mesh(geo, material);
+      newBird.position
+        .copy(intersect.point)
+        .add(intersect.face.normal)
+        .divideScalar(Math.sin(dataAvg));
+
+      scene.add(newBird);
+
+      newBirds.push(newBird);
+
+      //displacement
+      displacement.copy(velocity1).multiplyScalar(delta);
+      //target
+      target.copy(intersect.point).add(displacement);
+
+      while (newBirds.length > 100) {
+        newBirds.splice(0, 1);
+      }
+    }
+
     for (let i = 0; i < data.length; i++) {
       const value = 1;
       const v = data[i] / 512;
@@ -97,7 +150,7 @@ function generateBirds() {
       var total = 0;
 
       fam.forEach((b) => {
-        b.material.emissiveMap.needsUpdate = true;
+        material.emissiveMap.needsUpdate = true;
 
         var d = velocity.distanceTo(b.position);
 
@@ -123,6 +176,18 @@ function generateBirds() {
 
         angle += angleV;
         angleV += otherMap;
+      });
+
+      newBirds.forEach((b) => {
+        b.scale.y += Math.sin(newMap) * 5;
+        b.position.z += Math.sin(angle) * 3;
+        b.rotation.z += Math.sin(Math.PI / 2);
+        angle += Math.sin(newMap) * y;
+
+        angle += angleV;
+        angleV += otherMap;
+
+        // fam.push(b);
       });
     }
   };

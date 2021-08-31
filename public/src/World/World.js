@@ -78,20 +78,16 @@ class World {
 
     for (let i = 0; i < gbirds.length; i++) {
       scene.add(gbirds[i]);
+
+      // while (gbirds.length > 50) {
+      //   gbirds.splice(0, 1);
+      // }
+
+      // for (let i = gbirds.length - 1; i >= 0; i--) {
+      //   gbirds.splice(i, 1);
+      //   gbirds.remove(i);
+      // }
     }
-
-    // for (let i = 0; i < wires.length; i++) {
-    //   scene.add(wires[i]);
-
-    //   while (wires.length > 50) {
-    //     wires.splice(0, 1);
-    //   }
-
-    //   for (let i = wires.length - 1; i >= 0; i--) {
-    //     wires.splice(i, 1);
-    //     wires.remove(i);
-    //   }
-    // }
 
     const resizer = new Resizer(container, camera, renderer);
   }
