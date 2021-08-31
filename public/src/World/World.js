@@ -10,6 +10,7 @@ import { createCylinder } from "./components/animations/cylinder.js";
 import { createBirds } from "./components/animations/birds2.js";
 import { createLineBird } from "./components/animations/birds.js";
 import { createFlock } from "./components/animations/birds3.js";
+import { generateBirds } from "./components/animations/gbirds.js";
 
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
@@ -46,6 +47,7 @@ class World {
     const birdLine = createLineBird();
     const flock = createFlock();
     const cylinders = createCylinder();
+    const gbirds = generateBirds();
 
     loop.updatables.push(
       camera,
@@ -55,19 +57,9 @@ class World {
       birdLine,
       flock,
       cylinders,
+      gbirds,
       controls
     );
-
-    // loop.updatables.push(
-    //   camera,
-    //   scene,
-    //   floors,
-    //   birds,
-    //   birdLine,
-    //   flock,
-    //   cylinders,
-    //   controls
-    // );
 
     scene.add(ambientL, birds, birdLine);
     // scene.add(ambientL, birds, birdLine);
@@ -82,6 +74,10 @@ class World {
 
     for (let i = 0; i < flock.length; i++) {
       scene.add(flock[i]);
+    }
+
+    for (let i = 0; i < gbirds.length; i++) {
+      scene.add(gbirds[i]);
     }
 
     // for (let i = 0; i < wires.length; i++) {

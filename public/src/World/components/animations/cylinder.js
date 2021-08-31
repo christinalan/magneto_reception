@@ -66,7 +66,7 @@ function createCylinder() {
   posaudio1.setDirectionalCone(45, 180, 0);
   posaudio1.rotation.set(Math.PI / 2, Math.PI / 5, 0);
 
-  const helper1 = new PositionalAudioHelper(posaudio1, 3);
+  const helper1 = new PositionalAudioHelper(posaudio1, 1);
   posaudio1.add(helper1);
 
   analyser = new THREE.AudioAnalyser(posaudio1, 256);
@@ -230,4 +230,4 @@ function createCylinder() {
   return cylinders;
 }
 
-export { createCylinder };
+export { createCylinder, analyser };
