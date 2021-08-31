@@ -15,11 +15,14 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { Loop } from "./systems/Loop.js";
 
+// import { setData } from "./components/audio.js";
+
 let camera;
 let renderer;
 let scene;
 let loop;
 let controls;
+let audioData;
 
 class World {
   constructor(container) {
@@ -39,18 +42,22 @@ class World {
     const floors = createFloor();
 
     //animations
-    // const birds = createBirds();
-    // const birdLine = createLineBird();
-    // const flock = createFlock();
-    // const cylinders = createCylinder();
+    const birds = createBirds();
+    const birdLine = createLineBird();
+    const flock = createFlock();
+    const cylinders = createCylinder();
 
     loop.updatables.push(
       camera,
       scene,
       floors,
-
+      birds,
+      birdLine,
+      flock,
+      cylinders,
       controls
     );
+
     // loop.updatables.push(
     //   camera,
     //   scene,
@@ -62,20 +69,20 @@ class World {
     //   controls
     // );
 
-    scene.add(ambientL);
+    scene.add(ambientL, birds, birdLine);
     // scene.add(ambientL, birds, birdLine);
 
     for (let i = 0; i < floors.length; i++) {
       scene.add(floors[i]);
     }
 
-    // for (let i = 0; i < cylinders.length; i++) {
-    //   scene.add(cylinders[i]);
-    // }
+    for (let i = 0; i < cylinders.length; i++) {
+      scene.add(cylinders[i]);
+    }
 
-    // for (let i = 0; i < flock.length; i++) {
-    //   scene.add(flock[i]);
-    // }
+    for (let i = 0; i < flock.length; i++) {
+      scene.add(flock[i]);
+    }
 
     // for (let i = 0; i < wires.length; i++) {
     //   scene.add(wires[i]);
@@ -107,4 +114,4 @@ class World {
   }
 }
 
-export { World, camera, scene, controls, renderer };
+export { World, camera, scene, controls, renderer, audioData };

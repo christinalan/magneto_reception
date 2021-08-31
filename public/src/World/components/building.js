@@ -46,7 +46,7 @@ function createFloor() {
       audio = new THREE.PositionalAudio(listener);
       audio.setBuffer(buffer);
       audio.setDistanceModel("exponential");
-      audio.setRefDistance(1000);
+      audio.setRefDistance(2000);
       audio.setDirectionalCone(90, 270, 0);
 
       audio.play();
@@ -65,7 +65,7 @@ function createFloor() {
       audio1 = new THREE.PositionalAudio(listener);
       audio1.setBuffer(buffer);
       audio1.setDistanceModel("exponential");
-      audio1.setRefDistance(2000);
+      audio1.setRefDistance(3000);
       audio1.setDirectionalCone(90, 270, 0);
 
       audio1.play();
@@ -82,9 +82,17 @@ function createFloor() {
     var elapsedTime = clock.getElapsedTime();
 
     for (let floor of floors) {
+      var speed = 0.3;
       floor.position.z += Math.sin(elapsedTime) * 2;
       if (audio) {
-        floor.children[0].rotation.x += Math.sin(elapsedTime / 2) * 0.1;
+        floor.children[0].rotation.y += Math.sin(Math.PI / 4) * speed;
+
+        if (
+          floor.children[0].rotation.y >= Math.PI / 4 &&
+          floor.children[0].rotation.y <= 0
+        ) {
+          speed *= -1;
+        }
       }
     }
   };

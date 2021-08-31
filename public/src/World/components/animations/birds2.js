@@ -108,50 +108,50 @@ function createBirds() {
 
   const bird = new THREE.Mesh(geometry, material);
 
+  const audioLoader = new THREE.AudioLoader();
+
   const listener = new THREE.AudioListener();
   camera.add(listener);
 
-  const birdAudio = document.getElementById("track9");
-  audio = new THREE.PositionalAudio(listener);
-  audio.setMediaElementSource(birdAudio);
-  audio.setDistanceModel("exponential");
-  audio.setRefDistance(300);
-  audio.setDirectionalCone(90, 100, 0);
-  audio.hasPlaybackControl = true;
-  audio.autoplay = true;
-  audio.rotation.set(0, Math.PI / 2, 0);
+  audioLoader.load("sounds/snippets/monk.mp3", function (buffer) {
+    audio = new THREE.PositionalAudio(listener);
+    audio.setBuffer(buffer);
+    audio.setDistanceModel("exponential");
+    audio.setRefDistance(400);
+    audio.setDirectionalCone(100, 270, 0);
+    audio.rotation.set(0, Math.PI / 2, 0);
 
-  const helper = new PositionalAudioHelper(audio, 3);
-  // audio.add(helper);
+    const helper = new PositionalAudioHelper(audio, 3);
+    // audio.add(helper);
 
-  birdAudio.play();
+    audio.play();
 
-  bird.add(audio);
+    bird.add(audio);
+  });
 
-  analyser = new THREE.AudioAnalyser(audio, 256);
+  // analyser = new THREE.AudioAnalyser(audio, 256);
 
   bird.tick = () => {
     const time = performance.now();
-    const data = analyser.getFrequencyData();
-    const dataAvg = analyser.getAverageFrequency();
 
-    for (let i = 0; i < data.length; i++) {
-      const value = 1;
-      const v = data[i] / 512;
-      const y = (v * 300) / 5000;
-      const object = scene.children[2];
+    const object = scene.children[2];
 
-      // object.scale.set(Math.sin(v), Math.sin(y), Math.sin(y / v));
-      object.rotation.y += Math.sin(y) * 0.05;
-      object.rotation.z = time * 0.0005;
-      audio.rotation.x += Math.sin(y) * 0.1;
-      audio.rotation.y += Math.sin(v) * 0.1;
-      audio.position.x += Math.sin(y) * 0.05;
-      object.material.uniforms["time"].value = 0.05 * time;
-      object.material.uniforms["sineTime"].value = Math.sin(
-        object.material.uniforms["time"].value * 0.05
-      );
-    }
+    // object.scale.set(Math.sin(v), Math.sin(y), Math.sin(y / v));
+    object.rotation.y += Math.sin(time) * 0.5;
+    object.rotation.z = time * 0.0005;
+    object.material.uniforms["time"].value = 0.05 * time;
+    object.material.uniforms["sineTime"].value = Math.sin(
+      object.material.uniforms["time"].value * 0.05
+    );
+
+    // const data = analyser.getFrequencyData();
+    // const dataAvg = analyser.getAverageFrequency();
+
+    // for (let i = 0; i < data.length; i++) {
+    //   const value = 1;
+    //   const v = data[i] / 512;
+    //   const y = (v * 300) / 5000;
+    // }
   };
   return bird;
 }

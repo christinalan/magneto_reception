@@ -121,76 +121,57 @@ function createLineBird() {
   const listener = new THREE.AudioListener();
   camera.add(listener);
 
-  const birdAudio = document.getElementById("track10");
-  audio = new THREE.PositionalAudio(listener);
-  audio.setMediaElementSource(birdAudio);
-  audio.setDistanceModel("exponential");
-  audio.setRefDistance(300);
-  audio.setDirectionalCone(90, 190, 0);
-  audio.hasPlaybackControl = true;
-  audio.autoplay = true;
-  audio.rotation.set(0, 0, 0);
-  audio.position.set(0, -30, 0);
+  const audioLoader = new THREE.AudioLoader();
 
-  const helper = new PositionalAudioHelper(audio, 3);
-  // audio.add(helper);
+  audioLoader.load("sounds/snippets/monk3.mp3", function (buffer) {
+    audio = new THREE.PositionalAudio(listener);
+    audio.setBuffer(buffer);
+    audio.setDistanceModel("exponential");
+    audio.setRefDistance(400);
+    audio.setDirectionalCone(100, 270, 0);
+    audio.rotation.set(0, Math.PI / 2, 0);
 
-  birdAudio.play();
+    const helper = new PositionalAudioHelper(audio, 30);
+    // audio.add(helper);
 
-  birds.add(audio);
-  analyser = new THREE.AudioAnalyser(audio, 256);
+    audio.play();
+
+    birds.add(audio);
+  });
 
   birds.tick = () => {
     const now = performance.now();
     let delta = (now - last) / 1000;
 
-    const data = analyser.getFrequencyData();
-    const dataAvg = analyser.getAverageFrequency();
+    position = new THREE.Vector3(window.innerWidth / 100, 0, 0);
+
+    velocity = new THREE.Vector3();
+    acceleration = new THREE.Vector3().random(Math.sin());
+
+    // const data = analyser.getFrequencyData();
+    // const dataAvg = analyser.getAverageFrequency();
 
     if (delta > 1) delta = 1; // safety cap on large deltas
     last = now;
 
-    // positionUniforms["time"].value = now * 0.005;
-    // positionUniforms["delta"].value = delta * 0.005;
+    const object = scene.children[3];
 
-    for (let i = 0; i < data.length; i++) {
-      let value = 1;
-      const v = data[i] / 512;
-      const y = (v * 300) / 5000;
+    const d = velocity.distanceTo(object.position);
 
-      var newMap = mapRange(value, 0, 255, 0, v);
-      var otherMap = mapRange(
-        value,
-        0,
-        1024,
-        window.innerHeight / 5000,
-        dataAvg
-      );
-
-      position = new THREE.Vector3(window.innerWidth / 100, 0, 0);
-
-      velocity = new THREE.Vector3(otherMap, Math.sin(v), 0);
-      acceleration = new THREE.Vector3(Math.sin(v), Math.sin(otherMap), v);
-
-      const object = scene.children[3];
-      object.rotation.z += Math.sin(v);
-
-      const d = velocity.distanceTo(audio.position);
-
-      if (d > 10 && d < 50) {
-        velocity.multiplyScalar(-1);
-        acceleration.multiplyScalar(-1);
-      }
-
-      object.children[0].rotation.z += Math.sin(y) * 0.1;
-      object.children[0].rotation.y += Math.sin(v) * 0.02;
-      object.position.set(Math.sin(now), Math.sin(v), 0);
-
-      object.material.uniforms["time"].value = 0.05 * now;
-      object.material.uniforms["sineTime"].value = Math.tan(
-        object.material.uniforms["time"].value * 0.005
-      );
+    if (d > 10 && d < 50) {
+      velocity.multiplyScalar(-1);
+      acceleration.multiplyScalar(-1);
     }
+
+    object.rotation.z += Math.sin(now) * 10;
+    object.rotation.y += Math.sin(now) * 2;
+
+    // object.position.set(Math.random(Math.sin(Math.PI / 2)), Math.sin(now), 0);
+
+    object.material.uniforms["time"].value = 0.05 * now;
+    object.material.uniforms["sineTime"].value = Math.sin(
+      object.material.uniforms["time"].value * 0.005
+    );
   };
 
   return birds;
