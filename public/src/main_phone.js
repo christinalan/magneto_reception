@@ -131,13 +131,13 @@ function animate() {
 function render() {
   deviceControls.update();
 
-  // if (buttonPressed) {
-  //   let data = {
-  //     control: deviceControls,
-  //     boolean: true,
-  //   };
-  //   socket.emit("msg", data);
-  // }
+  if (buttonPressed) {
+    let data = {
+      control: deviceControls,
+      boolean: true,
+    };
+    socket.emit("msg", data);
+  }
 
   cone.rotation.z += Math.sin(Math.PI / 4) * 0.01;
   renderer.render(scene, camera);

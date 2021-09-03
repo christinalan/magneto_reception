@@ -62,14 +62,14 @@ io.sockets.on("connection", (socket) => {
   //   socket.broadcast.emit("msgObj", msgObj);
   // });
 
-  // socket.on("msg", (data) => {
-  //   console.log(data);
-  //   let msgObj = {
-  //     control: data.control,
-  //     boolean: data.boolean,
-  //   };
-  //   socket.broadcast.emit("msgObj", msgObj);
-  // });
+  socket.on("msg", (data) => {
+    console.log(data);
+    let msgObj = {
+      control: data.control,
+      boolean: data.boolean,
+    };
+    socket.broadcast.emit("msgObj", msgObj);
+  });
 
   socket.on("offer", (id, message) => {
     socket.to(id).emit("offer", socket.id, message);
