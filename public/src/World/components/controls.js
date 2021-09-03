@@ -2,7 +2,7 @@ import * as THREE from "https://unpkg.com/three@0.121.1/build/three.module.js";
 import { PointerLockControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/controls/PointerLockControls.js";
 import { scene } from "../World.js";
 import { camera } from "../World.js";
-import { values } from "../../main_new.js";
+// import { values } from "../../main_new.js";
 
 let objects = [];
 let raycaster;
@@ -81,26 +81,26 @@ function createControls(camera, canvas) {
     }
   };
 
-  const onPhoneF = function () {
-    switch (true) {
-      case values.beta <= 90:
-        moveForward = true;
-        console.log(moveForward);
-        break;
+  // const onPhoneF = function () {
+  //   switch (true) {
+  //     case values.beta <= 90:
+  //       moveForward = true;
+  //       console.log(moveForward);
+  //       break;
 
-      case values.gamma <= 0:
-        moveLeft = true;
-        break;
+  //     case values.gamma <= 0:
+  //       moveLeft = true;
+  //       break;
 
-      case values.beta >= 90:
-        moveBackward = true;
-        break;
+  //     case values.beta >= 90:
+  //       moveBackward = true;
+  //       break;
 
-      case values.gamma >= 0:
-        moveRight = true;
-        break;
-    }
-  };
+  //     case values.gamma >= 0:
+  //       moveRight = true;
+  //       break;
+  //   }
+  // };
 
   const onKeyUp = function (event) {
     switch (event.code) {

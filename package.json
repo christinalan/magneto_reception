@@ -12,7 +12,9 @@
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^4.1.2",
-    "sockets": "^0.4.2",
-    "three": "^0.129.0"
+    "sockets": "^0.4.2"
+  },
+  "devDependencies": {
+    "three": "^0.132.2"
   }
 }

@@ -2,8 +2,9 @@ import { createCamera } from "./components/camera.js";
 import { createScene } from "./components/scene.js";
 import { createControls } from "./components/controls.js";
 import { createOrbitControls } from "./components/orbitcontrols.js";
-import { createAmbient, createDirectional } from "./components/light.js";
+// import { createDeviceControls } from "./components/devicecontrols.js";
 
+import { createAmbient, createDirectional } from "./components/light.js";
 import { createFloor } from "./components/building.js";
 
 import { createCylinder } from "./components/animations/cylinder.js";
@@ -15,6 +16,9 @@ import { generateBirds } from "./components/animations/gbirds.js";
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { Loop } from "./systems/Loop.js";
+
+// import { values } from "../main_new.js";
+// import { phoneControl, phoneOn } from "../main_new.js";
 
 // import { setData } from "./components/audio.js";
 
@@ -41,6 +45,10 @@ class World {
     const ambientL = createAmbient();
     // const dirL = createDirectional();
     const floors = createFloor();
+
+    // if (phoneOn) {
+    //   console.log(phoneControl.object);
+    // }
 
     //animations
     const birds = createBirds();
